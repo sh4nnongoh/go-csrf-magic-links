@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="/static/js/csrf.js"></script>
+</head>
+
+<body>
+    <!-- This element triggers a POST on load -->
+    <div hx-post="{{.route}}" hx-trigger="load" hx-target="this">
+        Checking Authorization...
+    </div>
+</body>
+
+</html>
