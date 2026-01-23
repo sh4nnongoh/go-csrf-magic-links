@@ -1,9 +1,10 @@
+// This file containts the common constants used throughout the webserver lifecycle.
 package main
 
 const (
-	CSRF_HEADER           = "x-csrf-token"
-	MAGIC_LINK_STORE_NAME = "magic"
-	COOKIE_STORE_NAME     = "cookies"
-	COOKIE_PROP_CSRF      = "csrf"
-	COOKIE_PROP_EMAIL     = "email"
+	csrfHeader         = "x-csrf-token"
+	magicLinkStoreName = "magic"
+	cookieStoreName    = "cookies"
+	cookiePropCsrf     = "csrf"
+	cookiePropEmail    = "email"
 )

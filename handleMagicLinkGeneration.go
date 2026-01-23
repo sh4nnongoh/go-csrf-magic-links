@@ -11,7 +11,7 @@ func handleMagicLinkGeneration(codecs []securecookie.Codec) func(c *gin.Context)
 	return func(c *gin.Context) {
 		csrf := c.GetHeader("X-CSRF-Token")
 		encoded, _ := securecookie.EncodeMulti(
-			MAGIC_LINK_STORE_NAME,
+			magicLinkStoreName,
 			SessionData{
 				"csrf":  csrf,
 				"email": c.PostForm("email"),

@@ -8,9 +8,9 @@ import (
 )
 
 func handleSecure(c *gin.Context) {
-	csrf := c.GetHeader(CSRF_HEADER)
+	csrf := c.GetHeader(csrfHeader)
 	session := sessions.Default(c)
-	if csrf != session.Get(COOKIE_PROP_CSRF) {
+	if csrf != session.Get(cookiePropCsrf) {
 		c.Header("HX-Redirect", "/login")
 		c.String(http.StatusSeeOther, "Invalid CSRF")
 		return
