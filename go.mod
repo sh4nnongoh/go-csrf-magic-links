@@ -1,4 +1,4 @@
-module sh4nnongoh.github.io/m
+module github.com/sh4nnongoh/go-csrf-magic-links/server
 
 go 1.25.5
 
