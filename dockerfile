@@ -1,5 +1,5 @@
 # Stage 1: Build the Go application
-FROM golang:1.21-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
@@ -18,8 +18,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -a -o main .
 # Stage 2: Create minimal runtime image
 FROM scratch
 
-# Copy only the built binary from the builder stage
+# Copy only the built binary, and public assets from the builder stage
 COPY --from=builder /app/main /main
+COPY --from=builder /app/static /static
+COPY --from=builder /app/templates /templates
 
 # Copy CA certificates for HTTPS if needed
 # COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
