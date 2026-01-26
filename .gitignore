@@ -33,4 +33,4 @@ go.work.sum
 
 tmp
 server
-
+*.pprof

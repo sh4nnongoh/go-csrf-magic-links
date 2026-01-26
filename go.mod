@@ -6,6 +6,7 @@ require (
 	github.com/gin-contrib/sessions v1.0.4
 	github.com/gin-gonic/gin v1.11.0
 	github.com/gorilla/securecookie v1.1.2
+	golang.org/x/sync v0.19.0
 )
 
 require (

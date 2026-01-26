@@ -29,3 +29,13 @@ docker run -d \
   -e GIN_MODE=release \
   myapp:latest
 ```
+
+# Benchmarking
+
+```bash
+cd ./cmd/benchmark/
+./start.sh
+
+# Evaluate the respective pprof output
+go tool pprof -http=:8081 ./<metric>.pprof
+```
