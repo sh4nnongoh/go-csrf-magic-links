@@ -15,11 +15,11 @@ import (
 )
 
 const (
-	ConcurrentRequestsCount   = 500
-	BenchmarkDuractionSeconds = 60
-	Host                      = "http://127.0.0.1:8080"
-	LoginRoute                = "/login"
-	GenerateMagicRoute        = "/magic/generate"
+	ConcurrentRequestsCount  = 500
+	BenchmarkDurationSeconds = 60
+	Host                     = "http://127.0.0.1:8080"
+	LoginRoute               = "/login"
+	GenerateMagicRoute       = "/magic/generate"
 )
 
 func generateCsrf() string {
@@ -35,7 +35,7 @@ func main() {
 		Timeout: 5 * time.Second,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), BenchmarkDuractionSeconds*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), BenchmarkDurationSeconds*time.Second)
 	defer cancel()
 	group, ctx := errgroup.WithContext(ctx)
 	semaphore := make(chan struct{}, ConcurrentRequestsCount)

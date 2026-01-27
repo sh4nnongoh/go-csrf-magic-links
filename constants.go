@@ -1,4 +1,4 @@
-// This file containts the common constants used throughout the webserver lifecycle.
+// This file contains the common constants used throughout the webserver lifecycle.
 package main
 
 const (
