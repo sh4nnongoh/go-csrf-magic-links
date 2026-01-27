@@ -21,21 +21,11 @@ curl -s "${BASE_URL}/debug/pprof/heap?seconds=${SAMPLING_PERIOD}" > heap_rate.pp
 
 wait "${curl_pids[@]}"
 
-curl_pids=()
-
 # Goroutine Profile
-curl -s "${BASE_URL}/debug/pprof/goroutine" > goroutine.pprof & curl_pids+=($!)
-# Save inuse_objects (currently live objects)
-curl -s "${BASE_URL}/debug/pprof/heap" > heap_inuse_objects.pprof & curl_pids+=($!)
-# Save inuse_space (bytes currently in use)
-curl -s "${BASE_URL}/debug/pprof/heap" > heap_inuse_space.pprof & curl_pids+=($!)
-
-wait "${curl_pids[@]}"
-
+curl -s "${BASE_URL}/debug/pprof/goroutine" > goroutine.pprof
+# Save raw heap profile for analysis
+curl -s "${BASE_URL}/debug/pprof/heap" > heap_raw.pprof
 # The ?gc=1 parameter triggers garbage collection before sampling
-# Save alloc_objects (total allocations during profile)
-curl -s "${BASE_URL}/debug/pprof/heap?gc=1" > heap_alloc_objects.pprof
-# Save alloc_space (bytes allocated)
-curl -s "${BASE_URL}/debug/pprof/heap?gc=1" > heap_alloc_space.pprof
+curl -s "${BASE_URL}/debug/pprof/heap?gc=1" > heap_with_gc.pprof
 
 kill "$go_pid" 2>/dev/null

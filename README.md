@@ -30,10 +30,10 @@ docker run -d \
   myapp:latest
 ```
 
-# Benchmarking
+# Load Testing
 
 ```bash
-cd ./cmd/benchmark/
+cd ./cmd/loadtest/
 ./start.sh
 
 # Evaluate the respective pprof output
