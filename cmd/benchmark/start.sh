@@ -24,7 +24,7 @@ wait "${curl_pids[@]}"
 curl_pids=()
 
 # Goroutine Profile
-curl -s "${BASE_URL}/debug/pprof/goroutine?debug=2" > goroutine.pprof & curl_pids+=($!)
+curl -s "${BASE_URL}/debug/pprof/goroutine" > goroutine.pprof & curl_pids+=($!)
 # Save inuse_objects (currently live objects)
 curl -s "${BASE_URL}/debug/pprof/heap" > heap_inuse_objects.pprof & curl_pids+=($!)
 # Save inuse_space (bytes currently in use)
