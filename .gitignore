@@ -34,3 +34,4 @@ go.work.sum
 tmp
 server
 *.pprof
+*_templ.go

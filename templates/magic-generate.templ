@@ -1,0 +1,6 @@
+package templates
+
+templ MagicGenerate(magic string) {
+  <div>Magic Link Sent!</div>
+  <div>This is your magic link: <a href={magic} hx-push-url="false">{magic}</a></div>
+}

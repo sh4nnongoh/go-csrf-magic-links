@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
 func handleSecure(c *gin.Context) {
@@ -15,8 +16,9 @@ func handleSecure(c *gin.Context) {
 		c.String(http.StatusSeeOther, "Invalid CSRF")
 		return
 	}
-	c.HTML(http.StatusOK, "secure.go.tmpl", gin.H{
-		"count": c.Param("id"),
-		"email": session.Get("email"),
-	})
+	// c.HTML(http.StatusOK, "secure.go.tmpl", gin.H{
+	// 	"count": c.Param("id"),
+	// 	"email": session.Get("email"),
+	// })
+	views.Secure(c.Param("id"), session.Get("email").(string)).Render(c.Request.Context(), c.Writer)
 }

@@ -1,0 +1,10 @@
+package templates
+
+templ RedirectNoHistory() {
+  <script>
+    // This replaces the current history entry instead of adding a new one
+    window.location.replace("/secure/1");
+  </script>
+
+  <div>Redirecting...</div>
+}

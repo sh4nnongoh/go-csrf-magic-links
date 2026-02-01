@@ -1,0 +1,21 @@
+
+package templates
+
+templ Secure(count string, email string) {
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+                integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+                crossorigin="anonymous"></script>
+    <script src="/static/js/csrf.js"></script>
+  </head>
+
+  <body>
+    <div>SECURE CONTENT {count} {"for"} {email}</div>
+  </body>
+
+  </html>
+}

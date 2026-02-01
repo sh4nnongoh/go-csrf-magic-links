@@ -12,6 +12,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
+
+	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
 //nolint:funlen
@@ -58,26 +60,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	router.LoadHTMLGlob("templates/*.go.tmpl")
 	router.Static("/static", "./static")
 	router.Use(sessions.Sessions(cookieStoreName, storeCookies))
 	router.POST("/magic/generate", handleMagicLinkGeneration(codecs))
 	router.POST("/magic/verify/:magic", handleMagicLinkVerification(codecs))
 	router.GET("/magic/verify/:magic", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "check-auth.go.tmpl", gin.H{
-			"route": "",
-		})
+		views.CheckAuth("").Render(c.Request.Context(), c.Writer)
 	})
 	router.GET("/secure/:id", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "check-auth.go.tmpl", gin.H{
-			"route": c.Request.URL.Path,
-		})
+		views.CheckAuth(c.Request.URL.Path).Render(c.Request.Context(), c.Writer)
 	})
 	router.POST("/secure/:id", handleSecure)
 	router.GET("/login", MiddlewareNoCache(), func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.go.tmpl", gin.H{
-			"csrfToken": generateCsrf(),
-		})
+		views.Login(generateCsrf()).Render(c.Request.Context(), c.Writer)
+	})
+	router.GET("/", func(c *gin.Context) {
+		views.Home().Render(c.Request.Context(), c.Writer)
 	})
 
 	if err := router.Run(); err != nil {

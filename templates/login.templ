@@ -1,0 +1,25 @@
+package templates
+
+templ Login(csrf string) {
+  <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="csrf-token" content="{csrf}">
+        <script src="https://unpkg.com/htmx.org@1.9.10"
+                integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+                crossorigin="anonymous"></script>
+        <script src="/static/js/csrf.js"></script>
+    </head>
+
+    <body>
+        <!-- Form that submits via HTMX -->
+        <form hx-post="/magic/generate" hx-trigger="submit" hx-target="this">
+            <input type="email" name="email" placeholder="Enter email" required>
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+
+    </html>
+}

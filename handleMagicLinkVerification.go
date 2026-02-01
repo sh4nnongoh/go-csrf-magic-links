@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
+	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
 func handleMagicLinkVerification(codecs []securecookie.Codec) func(c *gin.Context) {
@@ -32,8 +33,6 @@ func handleMagicLinkVerification(codecs []securecookie.Codec) func(c *gin.Contex
 			_ = fmt.Errorf("failed to save session: %w", err)
 		}
 		c.Header("Content-Type", "text/html")
-		c.HTML(http.StatusOK, "redirect-no-history.go.tmpl", gin.H{
-			"route": "/secure/1",
-		})
+		views.RedirectNoHistory().Render(c.Request.Context(), c.Writer)
 	}
 }

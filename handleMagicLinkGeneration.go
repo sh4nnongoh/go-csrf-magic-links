@@ -1,10 +1,9 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
+	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
 func handleMagicLinkGeneration(codecs []securecookie.Codec) func(c *gin.Context) {
@@ -18,8 +17,6 @@ func handleMagicLinkGeneration(codecs []securecookie.Codec) func(c *gin.Context)
 			},
 			codecs...,
 		)
-		c.HTML(http.StatusOK, "magic-generate.go.tmpl", gin.H{
-			"magic": "http://localhost:8080/magic/verify/" + encoded,
-		})
+		views.MagicGenerate("http://localhost:8080/magic/verify/"+encoded).Render(c.Request.Context(), c.Writer)
 	}
 }
