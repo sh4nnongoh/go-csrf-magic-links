@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/rand"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,7 +10,6 @@ import (
 	_ "net/http/pprof"
 
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
 )
@@ -32,27 +30,22 @@ func main() {
 		}
 	}()
 
-	authKeyMagic := make([]byte, 32)
-	encryptKeyMagic := make([]byte, 32)
-	if _, err := rand.Read(authKeyMagic); err != nil {
-		_ = fmt.Errorf("failed to generate authKeyMagic: %w", err)
-	}
-	if _, err := rand.Read(encryptKeyMagic); err != nil {
-		_ = fmt.Errorf("failed to generate encryptKeyMagic: %w", err)
-	}
+	// For Magic Links
+	authKeyMagic := securecookie.GenerateRandomKey(32)
+	encryptKeyMagic := securecookie.GenerateRandomKey(32)
 	codec := securecookie.New(authKeyMagic, encryptKeyMagic)
+	codec.SetSerializer(JSONEncoder{})
 	codec.MaxAge(60 * 60 * 15)
 	codecs := []securecookie.Codec{codec}
 
-	authKeyCookie := make([]byte, 32)
-	encryptKeyCookie := make([]byte, 32)
-	if _, err := rand.Read(authKeyMagic); err != nil {
-		_ = fmt.Errorf("failed to generate authKeyCookie: %w", err)
-	}
-	if _, err := rand.Read(encryptKeyMagic); err != nil {
-		_ = fmt.Errorf("failed to generate encryptKeyCookie: %w", err)
-	}
-	storeCookies := cookie.NewStore(authKeyCookie, encryptKeyCookie)
+	// For Cookie Store
+	authKeyCookie := securecookie.GenerateRandomKey(32)
+	encryptKeyCookie := securecookie.GenerateRandomKey(32)
+	codecCookie := securecookie.New(authKeyCookie, encryptKeyCookie)
+	codecCookie.SetSerializer(JSONEncoder{})
+	codecCookie.MaxAge(60 * 60 * 60 * 3)
+	codecsCookie := []securecookie.Codec{codecCookie}
+	storeCookies := NewJsonStore(codecsCookie)
 	storeCookies.Options(sessions.Options{
 		Path:     "/",
 		MaxAge:   60 * 60 * 60 * 3,

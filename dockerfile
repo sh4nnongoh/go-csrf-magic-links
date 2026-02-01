@@ -34,6 +34,7 @@ USER 1000:1000
 
 # Set minimal environment
 ENV GOMAXPROCS=1
+ENV GOMEMLIMIT=58MiB
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

@@ -18,6 +18,8 @@ curl -s "${BASE_URL}/debug/pprof/block?seconds=${SAMPLING_PERIOD}" > block.pprof
 curl -s "${BASE_URL}/debug/pprof/mutex?seconds=${SAMPLING_PERIOD}" > mutex.pprof & curl_pids+=($!)
 # # To answer: "How many objects are we creating per request?"
 curl -s "${BASE_URL}/debug/pprof/heap?seconds=${SAMPLING_PERIOD}" > heap_rate.pprof & curl_pids+=($!)
+# # Trace
+curl -s "${BASE_URL}/debug/pprof/trace?seconds=${SAMPLING_PERIOD}" > trace.pprof & curl_pids+=($!)
 
 wait "${curl_pids[@]}"
 
