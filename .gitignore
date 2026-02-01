@@ -35,3 +35,4 @@ tmp
 server
 *.pprof
 *_templ.go
+go-csrf-magic-links

@@ -3,16 +3,18 @@ module github.com/sh4nnongoh/go-csrf-magic-links
 go 1.25.5
 
 require (
+	github.com/a-h/templ v0.3.977
 	github.com/gin-contrib/sessions v1.0.4
 	github.com/gin-gonic/gin v1.11.0
+	github.com/goccy/go-json v0.10.5
 	github.com/gorilla/securecookie v1.1.2
+	github.com/gorilla/sessions v1.4.0
 	golang.org/x/sync v0.19.0
 )
 
 require (
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/a-h/parse v0.0.0-20250122154542-74294addb73e // indirect
-	github.com/a-h/templ v0.3.977 // indirect
 	github.com/air-verse/air v1.64.2 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/bep/godartsass/v2 v2.5.0 // indirect
@@ -31,11 +33,9 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.30.1 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
-	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gohugoio/hugo v0.149.1 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
-	github.com/gorilla/sessions v1.4.0 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
