@@ -16,9 +16,9 @@ func handleSecure(c *gin.Context) {
 		c.String(http.StatusSeeOther, "Invalid CSRF")
 		return
 	}
-	// c.HTML(http.StatusOK, "secure.go.tmpl", gin.H{
-	// 	"count": c.Param("id"),
-	// 	"email": session.Get("email"),
-	// })
-	views.Secure(c.Param("id"), session.Get("email").(string)).Render(c.Request.Context(), c.Writer)
+
+	if err := views.Secure(c.Param("id"), session.Get("email").(string)).Render(c.Request.Context(), c.Writer); err != nil {
+		helperAddErrorToGinContext(c, err)
+		return
+	}
 }

@@ -47,7 +47,7 @@ func main() {
 	codecCookie.SetSerializer(JSONEncoder{})
 	codecCookie.MaxAge(60 * 60 * 60 * 3)
 	codecsCookie := []securecookie.Codec{codecCookie}
-	storeCookies := NewJsonStore(codecsCookie)
+	storeCookies := NewJSONStore(codecsCookie)
 	storeCookies.Options(sessions.Options{
 		Path:     "/",
 		MaxAge:   60 * 60 * 60 * 3,
@@ -65,17 +65,29 @@ func main() {
 	router.POST("/magic/generate", handleMagicLinkGeneration(codecs))
 	router.POST("/magic/verify/:magic", handleMagicLinkVerification(codecs))
 	router.GET("/magic/verify/:magic", func(c *gin.Context) {
-		views.CheckAuth("").Render(c.Request.Context(), c.Writer)
+		if err := views.CheckAuth("").Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	})
 	router.GET("/secure/:id", func(c *gin.Context) {
-		views.CheckAuth(c.Request.URL.Path).Render(c.Request.Context(), c.Writer)
+		if err := views.CheckAuth(c.Request.URL.Path).Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	})
 	router.POST("/secure/:id", handleSecure)
 	router.GET("/login", MiddlewareNoCache(), func(c *gin.Context) {
-		views.Login(generateCsrf()).Render(c.Request.Context(), c.Writer)
+		if err := views.Login(generateCsrf()).Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	})
 	router.GET("/", func(c *gin.Context) {
-		views.Home().Render(c.Request.Context(), c.Writer)
+		if err := views.Home().Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	})
 
 	if err := router.Run(); err != nil {

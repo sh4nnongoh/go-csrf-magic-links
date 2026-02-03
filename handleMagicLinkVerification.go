@@ -33,6 +33,9 @@ func handleMagicLinkVerification(codecs []securecookie.Codec) func(c *gin.Contex
 			_ = fmt.Errorf("failed to save session: %w", err)
 		}
 		c.Header("Content-Type", "text/html")
-		views.RedirectNoHistory().Render(c.Request.Context(), c.Writer)
+		if err := views.RedirectNoHistory().Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	}
 }

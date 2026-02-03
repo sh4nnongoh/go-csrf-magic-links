@@ -8,7 +8,7 @@ import (
 	gsessions "github.com/gorilla/sessions"
 )
 
-func NewJsonStore(codecs []securecookie.Codec) sessions.Store {
+func NewJSONStore(codecs []securecookie.Codec) sessions.Store {
 	cs := &gsessions.CookieStore{
 		Codecs: codecs,
 		Options: &gsessions.Options{

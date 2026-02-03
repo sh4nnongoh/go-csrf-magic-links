@@ -1,3 +1,4 @@
+// Just a load test script
 package main
 
 import (
@@ -71,8 +72,14 @@ loop:
 				if err != nil {
 					return err
 				}
-				io.ReadAll(res.Body)
-				defer res.Body.Close()
+				if _, err := io.ReadAll(res.Body); err != nil {
+					log.Println("error reading:", err)
+				}
+				defer func() {
+					if err := res.Body.Close(); err != nil {
+						log.Println("error closing body:", err)
+					}
+				}()
 				return nil
 			})
 		}

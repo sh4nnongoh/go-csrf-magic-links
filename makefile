@@ -7,7 +7,7 @@ test:
 	go test ./...
 
 run:
-	./m
+	./go-csrf-magic-links
 
 lint:
 	golangci-lint run

@@ -17,6 +17,9 @@ func handleMagicLinkGeneration(codecs []securecookie.Codec) func(c *gin.Context)
 			},
 			codecs...,
 		)
-		views.MagicGenerate("http://localhost:8080/magic/verify/"+encoded).Render(c.Request.Context(), c.Writer)
+		if err := views.MagicGenerate("http://localhost:8080/magic/verify/"+encoded).Render(c.Request.Context(), c.Writer); err != nil {
+			helperAddErrorToGinContext(c, err)
+			return
+		}
 	}
 }
