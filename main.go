@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -12,11 +11,12 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
+	"go.uber.org/zap"
 
 	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
-func NewRouter(isTest bool) *gin.Engine {
+func NewRouter(logger *zap.Logger, isTest bool) *gin.Engine {
 	if isTest {
 		gin.SetMode(gin.TestMode)
 	}
@@ -44,7 +44,10 @@ func NewRouter(isTest bool) *gin.Engine {
 		Secure:   false,
 	})
 
-	router := gin.Default()
+	// router := gin.Default()
+	router := gin.New()
+	router.Use(MiddlewareZapLogger(logger))
+	router.Use(MiddlewareZapRecovery(logger))
 	err := router.SetTrustedProxies([]string{"127.0.0.1"})
 	if err != nil {
 		panic(err)
@@ -93,11 +96,17 @@ func main() {
 		}
 
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("server failed: %v", err)
+			_ = fmt.Errorf("server failed: %v", err)
 		}
 	}()
 
-	router := NewRouter(false)
+	logger, err := zap.NewProduction()
+	if err != nil {
+		_ = fmt.Errorf("failed to run router: %w", err)
+		return
+	}
+	defer logger.Sync()
+	router := NewRouter(logger, false)
 	if err := router.Run(); err != nil {
 		_ = fmt.Errorf("failed to run router: %w", err)
 	}
