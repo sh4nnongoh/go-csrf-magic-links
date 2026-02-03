@@ -16,21 +16,10 @@ import (
 	views "github.com/sh4nnongoh/go-csrf-magic-links/templates"
 )
 
-//nolint:funlen
-func main() {
-	// Start pprof HTTP server
-	go func() {
-		srv := &http.Server{
-			Addr:         ":6060",
-			ReadTimeout:  5 * time.Second,
-			WriteTimeout: 5 * time.Second,
-			IdleTimeout:  5 * time.Second,
-		}
-
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("server failed: %v", err)
-		}
-	}()
+func NewRouter(isTest bool) *gin.Engine {
+	if isTest {
+		gin.SetMode(gin.TestMode)
+	}
 
 	// For Magic Links
 	authKeyMagic := securecookie.GenerateRandomKey(32)
@@ -89,7 +78,26 @@ func main() {
 			return
 		}
 	})
+	return router
+}
 
+//nolint:funlen
+func main() {
+	// Start pprof HTTP server
+	go func() {
+		srv := &http.Server{
+			Addr:         ":6060",
+			ReadTimeout:  5 * time.Second,
+			WriteTimeout: 5 * time.Second,
+			IdleTimeout:  5 * time.Second,
+		}
+
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("server failed: %v", err)
+		}
+	}()
+
+	router := NewRouter(false)
 	if err := router.Run(); err != nil {
 		_ = fmt.Errorf("failed to run router: %w", err)
 	}

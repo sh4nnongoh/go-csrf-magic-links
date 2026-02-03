@@ -1,10 +1,16 @@
 .PHONY: build test run lint
 
 build:
-	go get && go mod tidy && go tool templ generate && go build
+	go get
+	go mod tidy
+	go tool templ generate
+	go build -tags=ignoretests
 
 test:
-	go test ./...
+	go test -run=Test ./...
+
+bench:
+	go test -bench=. -benchmem
 
 run:
 	./go-csrf-magic-links
